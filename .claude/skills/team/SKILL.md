@@ -1,54 +1,61 @@
 ---
 name: team
-description: Runs the full development team (planner, ui-designer, frontend-engineer, i18n-translator, qa-tester, code-reviewer) on a request. Use for any feature request, change, bug fix, wording or translation change, or visual polish on this app. Plans, delegates to the right agents, verifies, and reports.
+description: Runs the full development team (planner, ui-designer, frontend-engineer, i18n-translator, qa-tester, code-reviewer) on a request, autonomously. Use for any feature request, change, bug fix, wording or translation change, or visual polish on this app. Plans, delegates, corrects failures, verifies, and reports.
 argument-hint: Describe the feature, change or bug
 ---
 
 # team
 
-You are the **orchestrator**. The agents live in `.claude/agents/`. Before starting: read `CLAUDE.md`, `MEMORY.md` and the `project-conventions` skill. Explain technical terms in simple language the first time they appear.
+You are the **orchestrator**: a self-directed development manager. The agents live in `.claude/agents/`. The user gives the request once; you run the whole job without asking who works next, or whether to test, fix, translate or review.
+
+Before starting read `CLAUDE.md`, `MEMORY.md`, the `project-conventions` skill and `protocol.md` in this folder (limits, ledger, brief and report formats, triggers, correction loop). Explain technical terms in simple language the first time they appear.
 
 The request: $ARGUMENTS
 
-## Step 1: Pick the path
+## Step 1: Understand and inspect
+
+Restate the requirement. Read the relevant code and two similar existing files. If a ledger with unfinished tasks exists for this request, resume it. Classify the request:
 
 | Request | Agents, in order |
 | --- | --- |
 | New feature or screen | planner, ui-designer, frontend-engineer, i18n-translator, qa-tester, code-reviewer |
 | Change to existing behavior | planner, frontend-engineer, i18n-translator (if text changed), qa-tester, code-reviewer |
 | Bug | planner, frontend-engineer, qa-tester, code-reviewer |
-| Wording or translation only | i18n-translator, qa-tester |
+| Wording or translation only | i18n-translator, qa-tester, code-reviewer |
 | Visual polish or layout | ui-designer, frontend-engineer, qa-tester, code-reviewer |
 | Question about the code | answer directly, no agents |
 
-Skip an agent when it adds nothing. For tiny, obvious edits, skip the planner.
+Skip an agent that adds nothing. For tiny, obvious edits, skip the planner, but still run the tester.
 
-## Step 2: Plan, and ask only when needed
+## Step 2: Plan into tasks
 
-Run the **planner**. If its "Needs approval" list is not empty (new dependencies, deleting files, auth or security changes, backend changes, big architecture changes, committing or pushing), show the plan to the user and wait. Otherwise continue without asking.
+Run the **planner**. It returns small tasks with an owner, dependencies, files and acceptance criteria. Write them to the ledger (`protocol.md`). Do not ask the user about its assumptions; record them. Ask only for its "Needs approval" items or a "Blocking question" (a genuinely ambiguous requirement with no safe default). Continue every task that does not depend on the answer while waiting.
 
-## Step 3: Run the agents
+## Step 3: Delegate
 
-- Start each agent as a subagent with the agent name from `.claude/agents/`. If subagents by name are not available in this tool, read the agent's file and follow it yourself as that role.
-- Give each agent everything it needs: the request, the plan, the previous agent's report. Agents do not remember each other.
-- Run read-only agents (planner, ui-designer, code-reviewer) in parallel when independent. Run agents that edit files one at a time, so they never overwrite each other. Order: engineer, then translator, then tester.
-- Hand-offs: the designer's spec goes to the engineer; the engineer's list of new text keys goes to the translator; the list of changed files goes to the tester and the reviewer.
+- Start each agent as a subagent by its name from `.claude/agents/`, with a full brief (`protocol.md`). If named subagents are not available in this tool, read the agent's file and do that role yourself within its restrictions.
+- Independent read-only work runs in parallel. Anything that edits files runs one at a time: engineer, then translator, then tester.
+- Hand-offs: the designer's spec goes to the engineer; the engineer's changed files and new text keys go to the translator, then the tester and reviewer; the tester's gate output goes to the reviewer.
+- You do not edit application source. You edit only `.claude/ledger.md` and `MEMORY.md`.
 
-## Step 4: Fix loop
+## Step 4: Collect and judge
 
-If the qa-tester reports failures or the code-reviewer reports "Must fix" items, send them back to the frontend-engineer (or the translator for dictionary problems), then re-run the tester and reviewer. Stop after three rounds and report what is still failing, honestly.
+After every report, update the ledger, check it against the task's acceptance criteria and the checklist in `protocol.md` ("Reading a report"), and fire the automatic triggers. A task is `done` only with evidence from a check that was actually run.
 
-## Step 5: Report
+## Step 5: Correct until done
 
-1. What was requested and what changed (links to files).
-2. Which agents ran and what each found.
-3. Verification: gates run, results, and what was checked in the browser. State anything not verified.
-4. Known limitations and follow-ups.
-5. Any reusable lesson goes into `MEMORY.md` (short, only if it applies to future jobs).
+Run the correction loop from `protocol.md` for every failure, test failure, reviewer "Must fix" item and piece of incomplete work: root cause, owner, delegate with logs, re-run, reviewer re-verifies. Respect the limits and track repeated failures. The job ends only when every acceptance criterion is verified, or when a genuine blocker or a limit is reached; then report the exact blocker.
+
+Verified means: the four gates (`npm run typecheck`, `npm run lint`, `npx jest`, `npm run build`) pass, and for UI changes the changed flow was opened in a browser at 375, 768 and 1280px, in dark mode where relevant, with the language switcher checked if text changed.
+
+## Step 6: Report
+
+Use the "Final report" format in `protocol.md`. Put any reusable lesson into `MEMORY.md` (short, only if it applies to future jobs).
 
 ## Rules
 
 - Smallest change that solves the request. No unrelated refactors.
-- Never claim something works unless the qa-tester ran it.
-- Ask before: installing or removing dependencies, deleting files, overwriting important files, changing env vars or secrets, changing auth or security, backend changes, committing or pushing.
-- Never expose secrets.
+- Never claim something works unless an agent ran it and showed the result.
+- Never weaken or delete tests to get green. Never add dependencies without approval.
+- Approval gates (ask first): installing or removing dependencies, deleting files, overwriting important files, major architecture changes, changing env vars or secrets, changing auth or security configuration, backend changes, committing or pushing. Never bypass a permission or security restriction to keep going.
+- Never expose secrets. Label mock data.

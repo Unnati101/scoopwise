@@ -97,7 +97,7 @@ export function Header({ searchItems }: { searchItems: SearchItem[] }) {
           >
             <ShoppingBag className="h-5 w-5" aria-hidden />
             {pricing.itemCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[0.65rem] font-bold text-primary-foreground">
+              <span key={pricing.itemCount} className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 animate-pop items-center justify-center rounded-full bg-primary px-1 text-[0.65rem] font-bold text-primary-foreground">
                 {pricing.itemCount}
               </span>
             )}

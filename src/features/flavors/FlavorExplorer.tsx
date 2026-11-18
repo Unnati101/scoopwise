@@ -109,8 +109,8 @@ export function FlavorExplorer({ flavors, initialQuery = '' }: { flavors: Flavor
         </div>
       ) : (
         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
-          {results.map((flavor) => (
-            <FlavorCard key={flavor.id} flavor={flavor} />
+          {results.map((flavor, index) => (
+            <FlavorCard key={flavor.id} flavor={flavor} index={index} />
           ))}
         </div>
       )}

@@ -4,6 +4,7 @@ import { RotateCcw, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { ScoopCup } from '@/components/illustrations/ScoopCup';
 import { Button } from '@/components/ui/Button';
+import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { AddToCartButton } from '@/features/cart/AddToCartButton';
 import { QUIZ_QUESTIONS, recommendFlavors, type QuizAnswers, type QuizKey } from '@/lib/flavorQuiz';
@@ -21,7 +22,7 @@ export function FlavorQuiz({ flavors }: { flavors: Flavor[] }) {
   const answer = (key: QuizKey, value: string) => setAnswers((current) => ({ ...current, [key]: value }));
 
   return (
-    <section id="flavor-finder" className="container scroll-mt-40 pt-16" aria-labelledby="quiz-heading">
+    <Reveal as="section" id="flavor-finder" className="container scroll-mt-40 pt-16" aria-labelledby="quiz-heading">
       <div className="rounded-2xl border bg-surface p-6 shadow-card sm:p-8">
         <SectionHeading id="quiz-heading" title={t('home.quiz.title')} eyebrow={t('home.quiz.eyebrow')} className="justify-center text-center" />
 
@@ -83,6 +84,6 @@ export function FlavorQuiz({ flavors }: { flavors: Flavor[] }) {
           </div>
         )}
       </div>
-    </section>
+    </Reveal>
   );
 }

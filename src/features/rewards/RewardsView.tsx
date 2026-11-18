@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Reveal } from '@/components/ui/Reveal';
 import { CodeRow } from '@/features/rewards/CodeRow';
 import { useLocalStore } from '@/hooks/useLocalStore';
 import { useI18n } from '@/i18n/provider';
@@ -67,9 +68,9 @@ export function RewardsView() {
           {t('rewards.redeemTitle')}
         </h2>
         <ul className="grid gap-4 sm:grid-cols-3">
-          {REWARD_OPTIONS.map((option) => (
-            <li key={option.cost}>
-              <Card className="flex h-full flex-col items-center gap-2 p-5 text-center">
+          {REWARD_OPTIONS.map((option, index) => (
+            <Reveal as="li" key={option.cost} delay={index * 100}>
+              <Card className="flex h-full flex-col items-center gap-2 p-5 text-center transition duration-200 hover:-translate-y-1 hover:shadow-soft">
                 <span className="flex h-12 w-12 items-center justify-center rounded-full bg-blush text-primary">
                   <Gift className="h-6 w-6" aria-hidden />
                 </span>
@@ -79,7 +80,7 @@ export function RewardsView() {
                   {balance < option.cost ? t('rewards.morePoints', { count: option.cost - balance }) : t('rewards.redeem')}
                 </Button>
               </Card>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </section>

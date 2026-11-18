@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Badge } from '@/components/ui/Badge';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { PLANS, planPrice, type Plan } from '@/data/plans';
 import { SubscribeDialog } from '@/features/plans/SubscribeDialog';
@@ -25,12 +26,12 @@ export function PlansView({ flavors }: { flavors: Flavor[] }) {
     <>
       <section className="container py-12" aria-label={m.nav.plans}>
         <ul className="grid gap-6 lg:grid-cols-3">
-          {PLANS.map((plan) => {
+          {PLANS.map((plan, index) => {
             const text = m.data.plans[plan.id];
             const isCurrent = current?.planId === plan.id;
             return (
-              <li key={plan.id}>
-                <Card className={cn('relative flex h-full flex-col gap-5 p-6', plan.popular && 'border-2 border-primary shadow-soft')}>
+              <Reveal as="li" key={plan.id} delay={index * 100}>
+                <Card className={cn('relative flex h-full flex-col gap-5 p-6 transition duration-200 hover:-translate-y-1 hover:shadow-soft', plan.popular && 'border-2 border-primary shadow-soft')}>
                   {plan.popular && (
                     <Badge className="absolute -top-3 left-6 bg-primary text-primary-foreground">
                       <Crown className="h-3 w-3" aria-hidden />
@@ -67,7 +68,7 @@ export function PlansView({ flavors }: { flavors: Flavor[] }) {
                     </Button>
                   )}
                 </Card>
-              </li>
+              </Reveal>
             );
           })}
         </ul>
@@ -78,13 +79,13 @@ export function PlansView({ flavors }: { flavors: Flavor[] }) {
         <SectionHeading id="how-plans-heading" title={t('plans.howTitle')} eyebrow={t('plans.howEyebrow')} className="justify-center text-center" />
         <ol className="grid gap-4 sm:grid-cols-3">
           {m.plans.how.map((step, index) => (
-            <li key={step.title}>
+            <Reveal as="li" key={step.title} delay={index * 100}>
               <Card className="h-full p-6 text-center">
                 <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blush font-display text-xl font-bold text-primary">{index + 1}</span>
                 <h3 className="mt-4 text-lg font-semibold">{step.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{step.text}</p>
               </Card>
-            </li>
+            </Reveal>
           ))}
         </ol>
       </section>

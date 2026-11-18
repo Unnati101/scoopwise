@@ -6,11 +6,12 @@ Read `MEMORY.md` before every job.
 
 ## How requests are handled
 
-Any request to change this app (feature, change, bug, wording, translation, visual polish) is run by the development team. Follow the `team` skill (`.claude/skills/team/SKILL.md`) without being asked, or run it explicitly with `/team <request>`.
+Any request to change this app (feature, change, bug, wording, translation, visual polish) is run by the development team, autonomously, from one request. The single entry point is the `team-lead` agent (select it in the chat, or run `claude --agent team-lead`); `/team <request>` does the same. It follows the `team` skill (`.claude/skills/team/SKILL.md`) and its `protocol.md` (limits, task ledger, handoff formats, correction loop) without being asked.
 
 | Agent | File | Job |
 | --- | --- | --- |
-| planner | `.claude/agents/planner.md` | Turns the request into a small plan and flags what needs approval |
+| team-lead | `.claude/agents/team-lead.md` | Orchestrates: plans, delegates, collects reports, corrects failures, reports. Edits no app code |
+| planner | `.claude/agents/planner.md` | Turns the request into small tasks with acceptance criteria and flags what needs approval |
 | ui-designer | `.claude/agents/ui-designer.md` | Specifies layout, states, responsive and dark-mode behavior |
 | frontend-engineer | `.claude/agents/frontend-engineer.md` | Implements the change in code |
 | i18n-translator | `.claude/agents/i18n-translator.md` | Keeps the five language dictionaries in sync |
@@ -18,6 +19,8 @@ Any request to change this app (feature, change, bug, wording, translation, visu
 | code-reviewer | `.claude/agents/code-reviewer.md` | Reviews the result for bugs, conventions, accessibility and security |
 
 Technical conventions (stack, folders, state, i18n, lint rules, commands) are in the `project-conventions` skill.
+
+The team does not ask which agent goes next, whether to test, fix, translate or review. It fixes failures itself within bounded retries, and stops with the exact blocker when it cannot finish.
 
 ## About the user
 

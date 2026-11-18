@@ -4,7 +4,7 @@ argument-hint: Describe the feature, change or bug
 agent: agent
 ---
 
-Read `CLAUDE.md` and `MEMORY.md`, then follow `.claude/skills/team/SKILL.md` step by step as the orchestrator, using the agents in `.claude/agents/`.
+Read `CLAUDE.md` and `MEMORY.md`, then follow `.claude/skills/team/SKILL.md` and `.claude/skills/team/protocol.md` step by step as the team-lead (`.claude/agents/team-lead.md`), using the agents in `.claude/agents/`. Run the whole job autonomously: plan, delegate, correct failures within the limits, and report. Ask only at an approval gate or for a genuinely ambiguous requirement.
 
 Request:
 

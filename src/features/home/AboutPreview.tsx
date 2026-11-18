@@ -1,6 +1,7 @@
 import { ArrowRight, Heart, IceCreamBowl, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { ScoopCup } from '@/components/illustrations/ScoopCup';
+import { Reveal } from '@/components/ui/Reveal';
 import { getI18n } from '@/i18n/server';
 
 const POINT_ICONS = [Sparkles, IceCreamBowl, Heart];
@@ -8,7 +9,7 @@ const POINT_ICONS = [Sparkles, IceCreamBowl, Heart];
 export async function AboutPreview() {
   const { t, m } = await getI18n();
   return (
-    <section aria-labelledby="about-heading" className="relative overflow-hidden rounded-2xl border bg-surface p-6 shadow-card sm:p-8 lg:col-span-2">
+    <Reveal as="section" delay={120} aria-labelledby="about-heading" className="relative overflow-hidden rounded-2xl border bg-surface p-6 shadow-card sm:p-8 lg:col-span-2">
       <h2 id="about-heading" className="text-2xl font-bold uppercase tracking-wide">
         {t('home.about.title')}
       </h2>
@@ -24,11 +25,11 @@ export async function AboutPreview() {
           );
         })}
       </ul>
-      <Link href="/about" className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+      <Link href="/about" className="group mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
         {t('home.about.link')}
-        <ArrowRight className="h-4 w-4" aria-hidden />
+        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
       </Link>
-      <ScoopCup color="#F7A3B7" className="pointer-events-none absolute -bottom-4 -right-2 h-36 w-36 opacity-90 sm:h-40 sm:w-40" />
-    </section>
+      <ScoopCup color="#F7A3B7" className="pointer-events-none absolute -bottom-4 -right-2 h-36 w-36 animate-float opacity-90 sm:h-40 sm:w-40" />
+    </Reveal>
   );
 }

@@ -14,15 +14,15 @@ export async function PopularFlavors({ flavors }: { flavors: Flavor[] }) {
         title={t('home.popular.title')}
         eyebrow={t('home.popular.eyebrow')}
         action={
-          <Link href="/flavors" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+          <Link href="/flavors" className="group inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
             {t('home.popular.viewAll')}
-            <ArrowRight className="h-4 w-4" aria-hidden />
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
           </Link>
         }
       />
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
-        {flavors.map((flavor) => (
-          <FlavorCard key={flavor.id} flavor={flavor} />
+        {flavors.map((flavor, index) => (
+          <FlavorCard key={flavor.id} flavor={flavor} index={index} />
         ))}
       </div>
     </section>

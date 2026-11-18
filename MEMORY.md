@@ -16,3 +16,4 @@ Only save feedback that applies to future jobs, not one-off edits.
 - Do not call `Date.now()` during render (lint rule); use `useWatch`, not `watch`.
 - After deleting routes, `tsc` can fail on stale `.next/types`; run `npm run build` once.
 - Re-read a file after a multi-part edit; clipped or stale replacements happen.
+- A server from an earlier run can still hold port 3100 and serve an old build; check what owns the port or use a free port before browser checks.

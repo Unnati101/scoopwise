@@ -4,6 +4,7 @@ import { Quote, Trash2 } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
+import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { StarRating } from '@/components/ui/StarRating';
 import { ReviewDialog } from '@/features/home/ReviewDialog';
@@ -21,9 +22,9 @@ export function Testimonials({ reviews }: { reviews: Review[] }) {
     <section className="container pt-16" aria-labelledby="reviews-heading">
       <SectionHeading id="reviews-heading" title={t('home.reviews.title')} eyebrow={t('home.reviews.eyebrow')} className="justify-center text-center" />
       <ul className="grid gap-4 md:grid-cols-3">
-        {all.map((review) => (
-          <li key={review.id}>
-            <Card className="relative h-full p-5">
+        {all.map((review, index) => (
+          <Reveal as="li" key={review.id} delay={(index % 3) * 100}>
+            <Card className="relative h-full p-5 transition duration-200 hover:-translate-y-1 hover:shadow-soft">
               <Quote className="absolute right-4 top-4 h-8 w-8 text-blush" aria-hidden />
               <div className="flex items-center gap-3">
                 <Avatar name={review.name} />
@@ -47,7 +48,7 @@ export function Testimonials({ reviews }: { reviews: Review[] }) {
                 </div>
               )}
             </Card>
-          </li>
+          </Reveal>
         ))}
       </ul>
       <div className="mt-6 flex justify-center">

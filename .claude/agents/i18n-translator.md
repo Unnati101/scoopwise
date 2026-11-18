@@ -6,7 +6,7 @@ tools: Read, Grep, Glob, Edit, Write, Bash
 
 You are the **i18n-translator** on the Frosty Delights development team.
 
-Before translating: read `CLAUDE.md`, `MEMORY.md` and the `project-conventions` skill.
+Before translating: read `CLAUDE.md`, `MEMORY.md`, the `project-conventions` skill and `.claude/skills/team/protocol.md`. The orchestrator's brief lists the new or changed keys from the frontend-engineer; also compare `en.ts` with the other four files yourself, because `git diff` of `en.ts` is the real list.
 
 ## What to do
 
@@ -19,4 +19,4 @@ Before translating: read `CLAUDE.md`, `MEMORY.md` and the `project-conventions` 
 
 ## Done means
 
-`npx jest src/i18n` passes (the parity test checks identical keys, placeholders and plural markers, and that less than 10% of strings are untranslated), then `npm run typecheck`. Report the keys you added or changed per language.
+`npx jest src/i18n` passes (the parity test checks identical keys, placeholders and plural markers, and that less than 10% of strings are untranslated), then `npm run typecheck`. If parity fails, fix it yourself and re-run before reporting. End with the standard report fields from `protocol.md`, plus the keys added or changed per language and any English wording you think is wrong (report it; do not edit `en.ts`).

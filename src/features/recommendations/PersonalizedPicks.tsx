@@ -44,8 +44,8 @@ export function PersonalizedPicks({ flavors, onlyWhenPersonalized = false }: Per
       <SectionHeading id="picks-heading" title={t('recommendations.title')} eyebrow={t('recommendations.eyebrow')} />
       <p className="-mt-5 mb-6 text-sm text-muted-foreground">{personalized ? t('recommendations.personalized') : t('recommendations.generic')}</p>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {recommendFlavorsFor(flavors, signals).map(({ flavor, reason }) => (
-          <FlavorCard key={flavor.id} flavor={flavor} note={reasonText(reason)} />
+        {recommendFlavorsFor(flavors, signals).map(({ flavor, reason }, index) => (
+          <FlavorCard key={flavor.id} flavor={flavor} note={reasonText(reason)} index={index} />
         ))}
       </div>
     </section>
